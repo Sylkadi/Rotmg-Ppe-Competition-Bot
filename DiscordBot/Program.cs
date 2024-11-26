@@ -1,4 +1,5 @@
-﻿
+﻿using DiscordBot.Bot;
+
 namespace DiscordBot
 {
     public class Program
@@ -23,9 +24,9 @@ namespace DiscordBot
             {
                 string userInput = Console.ReadLine();
 
-                if(!string.IsNullOrEmpty(userInput))
+                if (!string.IsNullOrEmpty(userInput))
                 {
-                    if(userInput.ToUpper() == "Q")
+                    if (userInput.ToUpper() == "Q")
                     {
                         goto End;
                     }
@@ -33,7 +34,7 @@ namespace DiscordBot
                 }
             }
 
-            End:;
+        End:;
         }
     }
 }

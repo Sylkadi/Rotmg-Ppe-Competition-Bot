@@ -103,7 +103,9 @@ namespace DiscordBot.Bot.RealmBot.Commands
                 x.Value = 
                 $"{GetEmoteString("whitebag")} {ppe.bagCount.whiteBagCount} " +
                 $"{GetEmoteString("orangebag")} {ppe.bagCount.orangeBagCount} " +
+                $"{GetEmoteString("goldenbag")} {ppe.bagCount.goldenBagCount}" + 
                 $"{GetEmoteString("redbag")} {ppe.bagCount.redBagCount} " +
+                $"{GetEmoteString("cyanbag")} {ppe.bestPpe.bagCount.cyanBagCount} " +
                 $"{GetEmoteString("exaltedblueprint")} {ppe.bagCount.blueBagCount}";
                 x.IsInline = true;
             });

@@ -1,8 +1,7 @@
 ﻿using Discord.WebSocket;
-using DiscordBot.Bot.RealmBot;
 using static DiscordBot.Util;
 
-namespace DiscordBot
+namespace DiscordBot.Bot
 {
     public class Command
     {
@@ -16,19 +15,20 @@ namespace DiscordBot
 
         private char prefix;
         public char Prefix
-        { 
+        {
             get { return prefix; }
             set
             {
-                if(value == ' ')
+                if (value == ' ')
                 {
                     Log.Warning("Prefix cannot be ' ', setting prefix to >");
                     prefix = '>';
-                } else
+                }
+                else
                 {
                     prefix = value;
                 }
-            } 
+            }
         }
 
         private string name;
@@ -37,7 +37,7 @@ namespace DiscordBot
             get { return name; }
             set
             {
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     Log.Warning("Command Name cannot be empty or null, setting name to a random number.");
                     name = new Random().Next(int.MaxValue).ToString();
@@ -46,7 +46,8 @@ namespace DiscordBot
                 {
                     Log.Warning("Command Name cannot contain \" \", setting name to a random number.");
                     name = new Random().Next(int.MaxValue).ToString();
-                } else
+                }
+                else
                 {
                     name = value.ToUpper();
                 }
@@ -68,9 +69,9 @@ namespace DiscordBot
 
             string withoutPrefix = inputSplit[0][1..];
             Command cmd = new Command();
-            if(from.TryGetValue(withoutPrefix.ToUpper(), out cmd) && inputSplit[0][0] == cmd.prefix)
+            if (from.TryGetValue(withoutPrefix.ToUpper(), out cmd) && inputSplit[0][0] == cmd.prefix)
             {
-                await cmd.ExecuteAsync(input, Util.GetArguements(message, cmd.Arguments));
+                await cmd.ExecuteAsync(input, GetArguements(message, cmd.Arguments));
                 return;
             }
         }
@@ -87,9 +88,9 @@ namespace DiscordBot
             string withouthPrefix = inputSplit[0][1..];
             Command cmd = new Command();
 
-            if(from.TryGetValue(withouthPrefix.ToUpper(), out cmd) && inputSplit[0][0] == cmd.prefix)
+            if (from.TryGetValue(withouthPrefix.ToUpper(), out cmd) && inputSplit[0][0] == cmd.prefix)
             {
-                await cmd.ExecuteAsync(input, Util.GetArguements(input, cmd.Arguments));
+                await cmd.ExecuteAsync(input, GetArguements(input, cmd.Arguments));
                 return;
             }
         }
@@ -98,9 +99,9 @@ namespace DiscordBot
         {
             Dictionary<string, Command> output = new Dictionary<string, Command>();
 
-            foreach(Command command in commands)
+            foreach (Command command in commands)
             {
-                if(!output.TryAdd(command.Name, command))
+                if (!output.TryAdd(command.Name, command))
                 {
                     Log.Warning($"Failed to add {command.Name} to the dictionary, as it already exits.");
                 }
@@ -113,7 +114,7 @@ namespace DiscordBot
         {
             List<GuildMatch> nameMatches = new List<GuildMatch>();
             List<GuildMatch> idMatches = new List<GuildMatch>();
-            foreach (SocketGuild guild in RealmBot.Instance.client.Guilds)
+            foreach (SocketGuild guild in RealmBot.RealmBot.Instance.client.Guilds)
             {
                 nameMatches.Add(new GuildMatch(guildIdName, StringMatchDistance(guildIdName, guild.Name), guild));
                 idMatches.Add(new GuildMatch(guildIdName, StringMatchDistance(guildIdName, guild.Id.ToString()), guild));
@@ -171,27 +172,27 @@ namespace DiscordBot
         public static SocketGuildUser GetUserFromName(SocketGuild fromGuild, string name)
         {
             List<UserMatch> nameMatches = new List<UserMatch>();
-            foreach(SocketGuildUser guildUser in fromGuild.Users)
+            foreach (SocketGuildUser guildUser in fromGuild.Users)
             {
                 if (guildUser == null) continue;
 
-                if(guildUser.Id.ToString() == name)
+                if (guildUser.Id.ToString() == name)
                 {
                     return guildUser;
                 }
-                if(!string.IsNullOrEmpty(guildUser.DisplayName))
+                if (!string.IsNullOrEmpty(guildUser.DisplayName))
                 {
                     nameMatches.Add(new UserMatch(guildUser.DisplayName, StringMatchDistance(guildUser.DisplayName, name), guildUser));
                 }
-                if(!string.IsNullOrEmpty(guildUser.GlobalName))
+                if (!string.IsNullOrEmpty(guildUser.GlobalName))
                 {
                     nameMatches.Add(new UserMatch(guildUser.GlobalName, StringMatchDistance(guildUser.GlobalName, name), guildUser));
                 }
-                if(!string.IsNullOrEmpty(guildUser.Nickname))
+                if (!string.IsNullOrEmpty(guildUser.Nickname))
                 {
                     nameMatches.Add(new UserMatch(guildUser.Nickname, StringMatchDistance(guildUser.Nickname, name), guildUser));
                 }
-                if(!string.IsNullOrEmpty(guildUser.Username))
+                if (!string.IsNullOrEmpty(guildUser.Username))
                 {
                     nameMatches.Add(new UserMatch(guildUser.Username, StringMatchDistance(guildUser.Username, name), guildUser));
                 }

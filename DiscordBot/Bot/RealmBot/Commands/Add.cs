@@ -72,8 +72,11 @@ namespace DiscordBot.Bot.RealmBot.Commands
             ItemCount itemCount = null;
             if (!ppe.itemDictionary.TryGetValue(itemName, out itemCount)) return;
 
-            ppe.bagCount.Add(itemCount.referenceItem.bagType, 1);
             int itemNet = itemCount.Increment(1);
+            if(itemNet != 0)
+            {
+                ppe.bagCount.Add(itemCount.referenceItem.bagType, 1);
+            }
             int setNet = 0;
 
             Setcount setCount = null;
@@ -100,8 +103,11 @@ namespace DiscordBot.Bot.RealmBot.Commands
             ItemCount itemCount = null;
             if (!ppe.itemDictionary.TryGetValue(itemName, out itemCount)) return;
 
-            ppe.bagCount.Add(itemCount.referenceItem.bagType, -1);
             int itemNet = itemCount.Decrement(1);
+            if(itemNet != 0)
+            {
+                ppe.bagCount.Add(itemCount.referenceItem.bagType, -1);
+            }
             int setNet = 0;
 
             Setcount setCount = null;

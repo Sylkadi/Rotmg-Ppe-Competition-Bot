@@ -94,6 +94,8 @@ namespace DiscordBot.Bot.RealmBot.Ppe
         {
             totalPoints = 0;
 
+            bagCount = new Bagcount();
+
             foreach(ItemCount itemCount in itemsCounts)
             {
                 totalPoints += itemCount.Compute();
@@ -199,6 +201,8 @@ namespace DiscordBot.Bot.RealmBot.Ppe
 
             DetermineBestPpe();
             SetNextPpes();
+
+            RecacluateTotalPoints();
         }
 
         public void DetermineBestPpe()

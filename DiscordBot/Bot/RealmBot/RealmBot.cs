@@ -169,14 +169,21 @@ namespace DiscordBot.Bot.RealmBot
 
             while (true)
             {
-                await Task.Delay(1000);
-
-                await ExpireButtonsAsync();
-                foreach (KeyValuePair<int, Total.TotalViewer> keyValuePair in Total.totalViewers)
+                try
                 {
-                    await keyValuePair.Value.AttemptExpireAsync();
+                    await Task.Delay(1000);
+
+                    await ExpireButtonsAsync();
+                    foreach (KeyValuePair<int, Total.TotalViewer> keyValuePair in Total.totalViewers)
+                    {
+                        await keyValuePair.Value.AttemptExpireAsync();
+                    }
+                    await competition.UpdateBoardAsync();
                 }
-                await competition.UpdateBoardAsync();
+                catch (Exception e)
+                {
+                    Log.Error(e.Message);
+                }
             }
         }
 
