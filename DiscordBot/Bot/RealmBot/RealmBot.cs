@@ -1,24 +1,13 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DiscordBot.Bot.RealmBot.Commands;
-using Discord.Commands;
 using Discord;
-using Discord.Net.Queue;
 using DiscordBot.Bot.RealmBot.Game;
-using DiscordBot.Bot.RealmBot.Ppe;
-using System.Net.NetworkInformation;
-using System.Diagnostics.Contracts;
 using Discord.Rest;
-using System.Collections.Concurrent;
 
 namespace DiscordBot.Bot.RealmBot
 {
-    internal class RealmBot : Bot
+    public class RealmBot : Bot
     {
         public static RealmBot Instance { get; private set; }
 

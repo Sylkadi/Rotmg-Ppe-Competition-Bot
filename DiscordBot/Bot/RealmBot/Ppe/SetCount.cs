@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Text.Json.Serialization;
-using Discord;
+﻿using System.Text.Json.Serialization;
 using DiscordBot.Bot.RealmBot.Game;
 
 namespace DiscordBot.Bot.RealmBot.Ppe

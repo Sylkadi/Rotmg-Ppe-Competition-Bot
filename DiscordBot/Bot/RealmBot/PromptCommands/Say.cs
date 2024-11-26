@@ -2,7 +2,7 @@
 
 namespace DiscordBot.Bot.RealmBot.PromptCommands
 {
-    internal class Say : Command
+    public class Say : Command
     {
         public Say()
         {

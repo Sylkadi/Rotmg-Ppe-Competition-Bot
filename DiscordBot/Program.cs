@@ -1,16 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Configuration;
-using Discord.WebSocket;
-using DiscordBot.Bot;
-using System.Threading;
-using System.Diagnostics;
-using DiscordBot.Bot.RealmBot.Ppe;
-using System.Text.Json;
-
+﻿
 namespace DiscordBot
 {
-    internal class Program
+    public class Program
     {
         public static List<Bot.Bot> bots = new List<Bot.Bot>()
         {

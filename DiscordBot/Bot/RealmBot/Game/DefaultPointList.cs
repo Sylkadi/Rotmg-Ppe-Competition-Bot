@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static DiscordBot.Bot.RealmBot.Game.Item;
+﻿using static DiscordBot.Bot.RealmBot.Game.Item;
 
 namespace DiscordBot.Bot.RealmBot.Game
 {

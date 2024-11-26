@@ -2,16 +2,10 @@
 using Discord.Rest;
 using Discord.WebSocket;
 using static DiscordBot.Bot.RealmBot.Emojis.Emojis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DiscordBot.Bot.RealmBot.Commands
 {
-    internal class Total : Command
+    public class Total : Command
     {
         public static Dictionary<int, TotalViewer> totalViewers = new Dictionary<int, TotalViewer>();
 

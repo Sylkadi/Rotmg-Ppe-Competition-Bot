@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace DiscordBot
 {
-    internal class Log
+    public class Log
     {
         public static void Fatal(object message)
         {

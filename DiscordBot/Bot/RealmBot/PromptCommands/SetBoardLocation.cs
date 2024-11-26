@@ -1,13 +1,8 @@
 ﻿using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DiscordBot.Bot.RealmBot.PromptCommands
 {
-    internal class SetBoardLocation : Command
+    public class SetBoardLocation : Command
     {
         public SetBoardLocation()
         {

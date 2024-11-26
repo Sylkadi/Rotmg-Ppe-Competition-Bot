@@ -1,14 +1,11 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
-using DiscordBot.Bot.RealmBot.Game;
 using DiscordBot.Bot.RealmBot.Ppe;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace DiscordBot.Bot.RealmBot.Commands
 {
-    internal class Add : Command
+    public class Add : Command
     {
         private static ComponentBuilder disabledButtons = new ComponentBuilder().
             WithButton("+", "ITEM_INCREMENT", ButtonStyle.Success, disabled: true).

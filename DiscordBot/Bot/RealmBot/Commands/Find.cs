@@ -2,7 +2,7 @@
 
 namespace DiscordBot.Bot.RealmBot.Commands
 {
-    internal class Find : Command
+    public class Find : Command
     {
         public Find()
         {

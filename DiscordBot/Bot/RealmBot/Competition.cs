@@ -1,16 +1,9 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
-using DiscordBot.Bot.RealmBot.Ppe;
-using Microsoft.Extensions.FileProviders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static DiscordBot.Bot.RealmBot.Emojis.Emojis;
-using System.Threading.Tasks;
 using DiscordBot.Bot.RealmBot.Game;
 
 namespace DiscordBot.Bot.RealmBot

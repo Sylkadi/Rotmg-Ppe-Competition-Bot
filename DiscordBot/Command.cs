@@ -1,17 +1,10 @@
-﻿using Discord;
-using Discord.WebSocket;
+﻿using Discord.WebSocket;
 using DiscordBot.Bot.RealmBot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using static DiscordBot.Util;
 
 namespace DiscordBot
 {
-    internal class Command
+    public class Command
     {
         public Command()
         {

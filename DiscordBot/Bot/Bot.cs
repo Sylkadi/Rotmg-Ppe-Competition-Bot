@@ -1,5 +1,4 @@
 ﻿using Discord.WebSocket;
-using Microsoft.Extensions.Configuration;
 
 namespace DiscordBot.Bot
 {
@@ -7,7 +6,7 @@ namespace DiscordBot.Bot
     {
         public virtual DiscordSocketClient client { get; set; }
 
-        internal virtual string token { get; set; }
+        public virtual string token { get; set; }
 
         public virtual async Task StartBotAsync()
         {
