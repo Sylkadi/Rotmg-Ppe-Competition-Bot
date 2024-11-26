@@ -828,6 +828,9 @@ namespace DiscordBot.Bot.RealmBot.Game
             new Set("Scientific Summoner", ["CLAW", "BOOM", "ARMOR", "CONTROLLER"], 360, 90),
             new Set("Fiery Kensei", ["Fiery Katana", "Pyro Sheath", "Flame Guard", "Firelight Necklace"], 360, 90),
             new Set("Tidal Wave Kensei", ["Saif of the Deep", "Loch Sheath", "Barrier Reef", "Alexanders Band"], 360, 90),
+
+            // Other
+            new Set("T7 Ring Collection", ["Ring of Transcendent Health", "Ring of Transcendent Magic", "Ring of Transcendent Attack", "Ring of Transcendent Defense", "Ring of Transcendent Speed", "Ring of Transcendent Dexterity", "Ring of Transcendent Vitality", "Ring of Transcendent Wisdom"], 400, 0)
         ];
 
     }

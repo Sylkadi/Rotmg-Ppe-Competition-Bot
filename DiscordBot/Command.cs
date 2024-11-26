@@ -80,8 +80,6 @@ namespace DiscordBot
                 await cmd.ExecuteAsync(input, Util.GetArguements(message, cmd.Arguments));
                 return;
             }
-
-            Log.Info($"ExecuteFromDictionary(), {input} isn't a command");
         }
 
         public virtual async Task ExecuteAsync(string original, string[] args) { }
@@ -101,8 +99,6 @@ namespace DiscordBot
                 await cmd.ExecuteAsync(input, Util.GetArguements(input, cmd.Arguments));
                 return;
             }
-
-            Log.Info($"ExecuteFromDictionary(), {input} isn't a command");
         }
 
         public static Dictionary<string, Command> CreateCommandDictionary(params Command[] commands)
