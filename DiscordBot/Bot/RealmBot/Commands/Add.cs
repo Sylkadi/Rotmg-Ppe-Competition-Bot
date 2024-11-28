@@ -2,6 +2,7 @@
 using Discord.Rest;
 using Discord.WebSocket;
 using DiscordBot.Bot.RealmBot.Ppe;
+using System.Collections.Generic;
 
 namespace DiscordBot.Bot.RealmBot.Commands
 {
@@ -25,35 +26,59 @@ namespace DiscordBot.Bot.RealmBot.Commands
 
             if (currentPpe == null) return;
 
-            string args1ToUpper = args[1].ToUpper();
-            if (RealmBot.Instance.competition.pointList.upperCaseToNormalDictionary.TryGetValue(args1ToUpper, out string name) && currentPpe.itemDictionary.TryGetValue(name, out ItemCount itemCount))
+            string last = "deca";
+            bool differentUser = false;
+            if (source.Author.Id.ToString() == RealmBot.Instance.adminID)
             {
-                await SendMessageAsync(source, itemCount);
+                int spaceIndex = 0;
+                while (args[1][spaceIndex] != ' ' && spaceIndex < args[1].Length)
+                {
+                    spaceIndex++;
+                }
+
+                string first = args[1][..spaceIndex];
+                last = args[1][(spaceIndex + 1)..];
+
+                if(RealmBot.Instance.competition.ppes.Exists(x => x.userID == first))
+                {
+                    differentUser = true;
+                    currentPpe = Ppe.Ppe.GetOrCreatePpeFromList(first, RealmBot.Instance.competition.ppes, RealmBot.Instance.competition.pointList);
+                }
+            }
+
+            string givenItemName = args[1].ToUpper();
+            if (differentUser)
+            {
+                givenItemName = last;
+            }
+            if (RealmBot.Instance.competition.pointList.upperCaseToNormalDictionary.TryGetValue(givenItemName, out string name) && currentPpe.itemDictionary.TryGetValue(name, out ItemCount itemCount))
+            {
+                await SendMessageAsync(source, currentPpe.userID, itemCount);
             } else
             {
                 List<NameMatchItem> nameMatchItems = new List<NameMatchItem>();
 
                 foreach(ItemCount _itemCount in currentPpe.itemsCounts)
                 {
-                    nameMatchItems.Add(new NameMatchItem(_itemCount.name, Util.StringMatchDistance(args1ToUpper, _itemCount.name.ToUpper()), _itemCount));
+                    nameMatchItems.Add(new NameMatchItem(_itemCount.name, Util.StringMatchDistance(givenItemName, _itemCount.name.ToUpper()), _itemCount));
                     foreach(string nickName in _itemCount.referenceItem.nickNames)
                     {
-                        nameMatchItems.Add(new NameMatchItem(_itemCount.name, Util.StringMatchDistance(args1ToUpper, nickName.ToUpper()), _itemCount));
+                        nameMatchItems.Add(new NameMatchItem(_itemCount.name, Util.StringMatchDistance(givenItemName, nickName.ToUpper()), _itemCount));
                     }
                 }
 
                 nameMatchItems.Sort();
 
-                await SendMessageAsync(source, nameMatchItems[0].itemCount);
+                await SendMessageAsync(source, currentPpe.userID, nameMatchItems[0].itemCount);
             }
         }
 
-        public async Task SendMessageAsync(SocketMessage source, ItemCount item)
+        public async Task SendMessageAsync(SocketMessage source, string userID, ItemCount item)
         {
             ComponentBuilder builder = new ComponentBuilder();
 
-            ButtonBuilder increment = new ButtonBuilder("+", $"ITEM_INCREMENT|{source.Author.Id}|{item.name}", ButtonStyle.Success);
-            ButtonBuilder decrement = new ButtonBuilder("-", $"ITEM_DECREMENT|{source.Author.Id}|{item.name}", ButtonStyle.Danger);
+            ButtonBuilder increment = new ButtonBuilder("+", $"ITEM_INCREMENT|{userID}|{item.name}", ButtonStyle.Success);
+            ButtonBuilder decrement = new ButtonBuilder("-", $"ITEM_DECREMENT|{userID}|{item.name}", ButtonStyle.Danger);
 
             builder.WithButton(increment);
             builder.WithButton(decrement);
@@ -69,6 +94,12 @@ namespace DiscordBot.Bot.RealmBot.Commands
 
         public static async Task ItemIncrementAsync(Ppe.Ppe ppe, string itemName, SocketMessageComponent component)
         {
+            SocketUser user = ((SocketGuildChannel)component.Channel).Guild.GetUser(Convert.ToUInt64(ppe.userID));
+            if(user == null)
+            {
+                user = component.User;
+            }
+
             ItemCount itemCount = null;
             if (!ppe.itemDictionary.TryGetValue(itemName, out itemCount)) return;
 
@@ -89,7 +120,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
             ppe.totalPoints += itemNet + setNet;
             ppe.Serialize();
 
-            EmbedBuilder builder = GetEmbed(component.User, itemCount, setCount, itemNet, setNet, oldPoints, ppe.totalPoints);
+            EmbedBuilder builder = GetEmbed(user, itemCount, setCount, itemNet, setNet, oldPoints, ppe.totalPoints);
 
             await component.DeferAsync();
             await component.ModifyOriginalResponseAsync(x => x.Components = disabledButtons.Build());

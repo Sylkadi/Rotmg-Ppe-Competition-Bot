@@ -199,10 +199,10 @@ namespace DiscordBot.Bot.RealmBot.Ppe
                 }
             }
 
-            DetermineBestPpe();
             SetNextPpes();
 
             RecacluateTotalPoints();
+            DetermineBestPpe();
         }
 
         public void DetermineBestPpe()

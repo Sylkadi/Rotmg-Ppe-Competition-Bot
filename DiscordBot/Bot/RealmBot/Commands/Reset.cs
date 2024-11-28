@@ -26,6 +26,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
                 if (RealmBot.Instance.competition.ppes.Exists(x => x.userID == args[1]))
                 {
                     target = Ppe.Ppe.GetOrCreatePpeFromList(args[1], RealmBot.Instance.competition.ppes, RealmBot.Instance.competition.pointList);
+                    Log.Info($"Target:{args[1]}");
                 }
             }
             else
@@ -64,6 +65,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
             ppe.Deserialize();
 
             ppe.SetNextPpes();
+            ppe.DetermineBestPpe();
 
             await component.DeferAsync();
             await component.ModifyOriginalResponseAsync(x => x.Components = disabledButtons.Build());

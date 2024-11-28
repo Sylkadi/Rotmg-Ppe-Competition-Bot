@@ -210,7 +210,7 @@ namespace DiscordBot.Bot.RealmBot
                         $"**Points:** {ppes[i].bestPpe.totalPoints} " + 
                         $"{GetEmoteString("whitebag")} {ppes[i].bestPpe.bagCount.whiteBagCount} " +
                         $"{GetEmoteString("orangebag")} {ppes[i].bestPpe.bagCount.orangeBagCount} " +
-                        $"{GetEmoteString("goldenbag")} {ppes[i].bagCount.goldenBagCount}" +
+                        $"{GetEmoteString("goldenbag")} {ppes[i].bagCount.goldenBagCount} " +
                         $"{GetEmoteString("redbag")} {ppes[i].bestPpe.bagCount.redBagCount} " +
                         $"{GetEmoteString("cyanbag")} {ppes[i].bestPpe.bagCount.cyanBagCount} " +
                         $"{GetEmoteString("exaltedblueprint")} {ppes[i].bestPpe.bagCount.blueBagCount}";

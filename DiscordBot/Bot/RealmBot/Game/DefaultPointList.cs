@@ -275,6 +275,7 @@ namespace DiscordBot.Bot.RealmBot.Game
             new Item("Wakizashi of Eastern Winds", [], BagType.White, 45, 23, 12), new Item("Shiny Wakizashi of Eastern Winds", [], BagType.White, 135, 68, 34),
             new Item("Labyrinth Dwellers Sheath", [], BagType.White, 45, 23, 12),
             new Item("Blessed Blade", [], BagType.Golden, 135, 68, 34),
+            new Item("Woodland Huntress Skin", [], BagType.Golden, 135, 68, 34),
 
             new Item("Pirate Kings Cutlass", ["cutlass"], BagType.White, 45, 23, 12), new Item("Shiny Pirate Kings Cutlass", ["shiny cutlass"], BagType.White, 135, 68, 34),
             new Item("Wavecrest Concertina", ["Concertina"], BagType.White, 45, 23, 12), new Item("Shiny Wavecrest Concertina", ["Shiny Concertina"], BagType.White, 135, 68, 34),
@@ -709,14 +710,14 @@ namespace DiscordBot.Bot.RealmBot.Game
             new Item("Godslayer Tachi", ["T14 Tachi"], BagType.Red, 50, 0),
 
             // T14 Armor
-            new Item("Wyrmhide Armor", ["T14 Leather"], BagType.Red, 35, 0),
-            new Item("Robe of the Star Mother", ["T14 Robe"], BagType.Red, 35, 0),
-            new Item("Dominion Armor", ["T14 Heavy"], BagType.Red, 35, 0),
+            new Item("Wyrmhide Armor", ["T13 Leather"], BagType.Red, 35, 0),
+            new Item("Robe of the Star Mother", ["T13 Robe"], BagType.Red, 35, 0),
+            new Item("Dominion Armor", ["T13 Heavy"], BagType.Red, 35, 0),
 
             // T15 Armor
-            new Item("Leviathan Armor", ["T15 Leather"], BagType.Red, 50, 0),
-            new Item("Robe of the Ancient Intellect", ["T15 Robe"], BagType.Red, 50, 0),
-            new Item("Annihilation Armor", ["T15 Heavy"], BagType.Red, 50, 0),
+            new Item("Leviathan Armor", ["T14 Leather"], BagType.Red, 50, 0),
+            new Item("Robe of the Ancient Intellect", ["T14 Robe"], BagType.Red, 50, 0),
+            new Item("Annihilation Armor", ["T14 Heavy"], BagType.Red, 50, 0),
 
             // T6 Abilities
             new Item("Cloak of Ghostly Concealment", ["T6 Cloak"], BagType.Red, 20, 0),

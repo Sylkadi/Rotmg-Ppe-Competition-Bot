@@ -92,19 +92,25 @@ namespace DiscordBot.Bot.RealmBot
             // arg[0] = buttonName, arg[1] = authorID, arg[2..] = whatever after
             if(ppe != null && args.Length > 1)
             {
-                switch(args[0])
+                Ppe.Ppe targetPpe = competition.ppes.FirstOrDefault(x => x.userID == args[1], null);
+                bool isAdmin = component.User.Id.ToString() == adminID;
+                switch (args[0])
                 {
-                    case "PPE_RESET_CONFIRM" when args[1] == component.User.Id.ToString() || args[1] == adminID:
-                        await Reset.ResetPpeAsync(ppe, component);
+                    case "PPE_RESET_CONFIRM" when (args[1] == component.User.Id.ToString() || isAdmin) && targetPpe != null:
+                        await Reset.ResetPpeAsync(targetPpe, component);
                         break;
-                    case "PPE_RESET_DECLINE" when args[1] == component.User.Id.ToString() || args[1] == adminID:
+                    case "PPE_RESET_DECLINE" when (args[1] == component.User.Id.ToString() || isAdmin) && targetPpe != null:
                         await Reset.DeclineResetPpeAsync(component);
                         break;
-                    case "ITEM_INCREMENT" when (args[1] == component.User.Id.ToString() || args[1] == adminID) && args.Length > 2:
-                        await Add.ItemIncrementAsync(ppe, args[2], component);
+                    case "ITEM_INCREMENT" when (args[1] == component.User.Id.ToString() || isAdmin) && args.Length > 2 && targetPpe != null:
+                        await Add.ItemIncrementAsync(targetPpe, args[2], component);
                         break;
-                    case "ITEM_DECREMENT" when (args[1] == component.User.Id.ToString() || args[1] == adminID) && args.Length > 2:
-                        await Add.ItemDecrementAsync(ppe, args[2], component);
+                    case "ITEM_DECREMENT" when (args[1] == component.User.Id.ToString() || isAdmin) && args.Length > 2 && targetPpe != null:
+                        ppe = competition.ppes.FirstOrDefault(x => x.userID == args[1], null);
+                        if (ppe != null)
+                        {
+                            await Add.ItemDecrementAsync(targetPpe, args[2], component);
+                        }
                         break;
                     case "PPE_TOTAL_PREVIOUS":
                         await Total.PreviousPpe(Int32.Parse(args[1]), component);
