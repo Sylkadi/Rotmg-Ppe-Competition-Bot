@@ -132,7 +132,6 @@ namespace DiscordBot.Bot.RealmBot
         private async Task ReadyAsync()
         {
             Log.Trace($"Bot {client.CurrentUser.Username} is ready.");
-            await Emojis.Emojis.InitalizeAsync();
 
             // Verify default point list images
             foreach(Item item in DefaultPointList.items)
@@ -158,6 +157,8 @@ namespace DiscordBot.Bot.RealmBot
                 competition.pointList.Deserialize();
             }
 
+            await Emojis.Emojis.InitalizeAsync();
+
             competition.ppes = new List<Ppe.Ppe>();
             string[] ppeFiles = Directory.GetFiles(IO.ppeDirectory);
 
@@ -170,8 +171,8 @@ namespace DiscordBot.Bot.RealmBot
 
                 competition.ppes.Add(ppe);
             }
-
             await competition.DeserializeAsync();
+
 
             while (true)
             {

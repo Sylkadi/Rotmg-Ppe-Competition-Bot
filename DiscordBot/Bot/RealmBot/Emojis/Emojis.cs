@@ -1,4 +1,5 @@
 ﻿using Discord;
+using DiscordBot.Bot.RealmBot.Game;
 
 namespace DiscordBot.Bot.RealmBot.Emojis
 {
@@ -41,13 +42,12 @@ namespace DiscordBot.Bot.RealmBot.Emojis
                     }
                 }
 
-                if (emote.emote == null && File.Exists(emote.imagePath))
+                if(emote.emote == null && File.Exists(emote.imagePath))
                 {
                     Log.Info($"Uploading {emote.name} to application emojis");
                     await RealmBot.Instance.client.CreateApplicationEmoteAsync(emote.name, new Image(emote.imagePath));
                 }
             }
-            
         }
 
         public static string GetEmoteString(string emoteName)
