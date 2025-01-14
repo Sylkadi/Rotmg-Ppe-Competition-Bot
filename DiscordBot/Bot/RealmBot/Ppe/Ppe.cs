@@ -2,6 +2,10 @@
 using System.Text.Json.Serialization;
 using Discord.WebSocket;
 using DiscordBot.Bot.RealmBot.Game;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Diagnostics;
 
 namespace DiscordBot.Bot.RealmBot.Ppe
 {
@@ -9,6 +13,9 @@ namespace DiscordBot.Bot.RealmBot.Ppe
     {
         [JsonInclude]
         public int totalPoints { get; set; }
+
+        [JsonInclude]
+        public int id { get; set; }
 
         [JsonInclude]
         public ItemCount[] itemsCounts { get; set; }
@@ -42,6 +49,52 @@ namespace DiscordBot.Bot.RealmBot.Ppe
 
         [JsonIgnore]
         public Dictionary<string, Setcount> setDictionary { get; private set; }
+
+        [JsonIgnore]
+        public bool itemInfographicUpdated { get; set; }
+
+        [JsonIgnore]
+        public string itemInfographicImagePath
+        {
+            get
+            {
+                if (!itemInfographicUpdated || !File.Exists(_itemitemInfographicImagePath))
+                {
+                    UpdateInfographic();
+                }
+                return _itemitemInfographicImagePath;
+            }
+        }
+
+        [JsonIgnore]
+        private string _itemitemInfographicImagePath
+        {
+            get
+            {
+                Ppe headPpe = this;
+                while (headPpe.nextPpe != null)
+                {
+                    headPpe = headPpe.nextPpe;
+                }
+
+                return $@"{IO.ppeDirectory}\{id}_{headPpe.userID}_Infographic.png";
+            }
+        }
+
+        [JsonIgnore]
+        public string itemInfographicImageName
+        {
+            get
+            {
+                Ppe headPpe = this;
+                while(headPpe.nextPpe != null)
+                {
+                    headPpe = headPpe.nextPpe;
+                }
+
+                return $"{id}_{headPpe.userID}";
+            }
+        }
 
         [JsonIgnore]
         private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions() { WriteIndented = true };
@@ -198,8 +251,10 @@ namespace DiscordBot.Bot.RealmBot.Ppe
                     break;
                 }
             }
+            id = ppeDeserialized.id;
 
             SetNextPpes();
+            SetIds();
 
             RecacluateTotalPoints();
             DetermineBestPpe();
@@ -236,6 +291,25 @@ namespace DiscordBot.Bot.RealmBot.Ppe
             }
         }
 
+        public void SetIds()
+        {
+            Ppe currentPpe = this;
+            while (currentPpe.previousPpe != null)
+            {
+                currentPpe = currentPpe.previousPpe;
+            }
+
+            int id = 0;
+            while(currentPpe.nextPpe != null)
+            {
+                currentPpe.id = id;
+                id++;
+                currentPpe = currentPpe.nextPpe;
+            }
+            currentPpe.id = id;
+
+        }
+
         public static Ppe GetOrCreatePpeFromList(string id, List<Ppe> fromList, PointList pointList)
         {
             Ppe currentPpe = null;
@@ -261,6 +335,140 @@ namespace DiscordBot.Bot.RealmBot.Ppe
             }
 
             return currentPpe;
+        }
+
+        public void UpdateInfographic()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            itemInfographicUpdated = true;
+
+            Ppe head = this;
+            while(head.nextPpe != null)
+            {
+                head = head.nextPpe;
+            }
+
+            int itemAmount = 0;
+            int shinyAmount = 0;
+            int setAmount = 0;
+
+            List<ItemCount> itemAmounts = new List<ItemCount>();
+            List<ItemCount> shinyAmounts = new List<ItemCount>();
+            List<Setcount> setAmounts = new List<Setcount>();
+
+            foreach(ItemCount itemCount in itemsCounts)
+            {
+                if (itemCount.amount <= 0) continue;
+
+                if(head.itemDictionary[itemCount.name].referenceItem.isShiny)
+                {
+                    shinyAmounts.Add(itemCount);
+                    shinyAmount += itemCount.amount;
+                } else
+                {
+                    itemAmounts.Add(itemCount);
+                    itemAmount += itemCount.amount;
+                }
+            }
+
+            foreach(Setcount setCount in setCounts)
+            {
+                if (setCount.amount <= 0) continue;
+
+                setAmounts.Add(setCount);
+                shinyAmount += setCount.amount;
+            }
+
+            itemAmounts.Sort();
+            shinyAmounts.Sort();
+            setAmounts.Sort();
+
+            int widthScale = 20;
+            int imageWidth = RealmBot.infographicImageSize * widthScale;
+            int imageHeight = (((itemAmount / widthScale) + 1) * RealmBot.infographicImageSize) + (((shinyAmount / widthScale) + 1) * RealmBot.infographicImageSize) + ((((setAmount * 4) / widthScale) + 1) * RealmBot.infographicImageSize);
+
+            Bitmap bitmap = new Bitmap(imageWidth, imageHeight);
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                // Fill background
+                g.FillRectangle(Brushes.Black, 0, 0, imageWidth, imageHeight);
+
+                int height = 0;
+                int index = 0;
+                int numberOffset = (RealmBot.infographicImageSize * 3) / 4;
+                void IterateIndex()
+                {
+                    index++;
+                    if (index / widthScale == 1)
+                    {
+                        index = 0;
+                        height++;
+                    }
+                }
+
+                // Non-Shiny items
+                foreach(ItemCount itemCount in itemAmounts)
+                {
+                    Bitmap itemBitmap = new Bitmap(head.itemDictionary[itemCount.name].referenceItem.proccessedImagePath);
+
+                    Point imagePoint = new Point(index * RealmBot.infographicImageSize, height * RealmBot.infographicImageSize);
+
+                    g.DrawImageUnscaled(itemBitmap, imagePoint);
+
+                    DrawNumber(g, itemCount.amount, imagePoint.X + numberOffset, imagePoint.Y + numberOffset);
+                    IterateIndex();
+                }
+                index = 0;
+                height++;
+
+                // Shiny items
+                foreach(ItemCount itemCount in shinyAmounts)
+                {
+                    Bitmap itemBitmap = new Bitmap(head.itemDictionary[itemCount.name].referenceItem.proccessedImagePath);
+
+                    Point imagePoint = new Point(index * RealmBot.infographicImageSize, height * RealmBot.infographicImageSize);
+
+                    g.DrawImageUnscaled(itemBitmap, imagePoint);
+
+                    DrawNumber(g, itemCount.amount, imagePoint.X + numberOffset, imagePoint.Y + numberOffset);
+                    IterateIndex();
+                }
+                index = 0;
+                height++;
+
+                // Set items
+                foreach(Setcount setCount in setAmounts)
+                {
+                    Point imagePoint = new Point();
+                    foreach (Item item in head.setDictionary[setCount.name].referenceSet.setItems)
+                    {
+                        Bitmap itemBitmap = new Bitmap(item.proccessedImagePath);
+
+                        imagePoint = new Point(index * RealmBot.infographicImageSize, height * RealmBot.infographicImageSize);
+                        g.DrawImageUnscaled(itemBitmap, imagePoint);
+                        IterateIndex();
+                    }
+
+                    DrawNumber(g, setCount.amount, imagePoint.X + numberOffset, imagePoint.Y + numberOffset);
+                    IterateIndex();
+                }
+            }
+
+            bitmap.Save(_itemitemInfographicImagePath, ImageFormat.Png);
+
+            sw.Stop();
+            Log.Info($"Image creation time: {sw.ElapsedMilliseconds}ms");
+        }
+
+        private static Font numberFont = new Font(new FontFamily("Arial"), RealmBot.infographicImageSize / 4, FontStyle.Bold, GraphicsUnit.Pixel);
+        private void DrawNumber(Graphics g, int value, int atX, int atY)
+        {
+            int valueMagnitude = (int)Math.Log10(value <= 0 ? 1 : value);
+            atX -= valueMagnitude * (int)numberFont.Size;
+
+            g.DrawString(value.ToString(), numberFont, Brushes.White, atX, atY);
         }
 
         public int CompareTo(Ppe? other)

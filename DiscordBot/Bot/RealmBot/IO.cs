@@ -13,6 +13,8 @@ namespace DiscordBot.Bot.RealmBot
 
         public static string emojiImageDirectory;
 
+        public static string processedImagesDirecotry;
+
         public static void Iniatlize()
         {
             generalDirectory = Environment.CurrentDirectory + @"\RealmBot";
@@ -29,6 +31,9 @@ namespace DiscordBot.Bot.RealmBot
 
             emojiImageDirectory = generalDirectory + @"\Emotes";
             Directory.CreateDirectory(emojiImageDirectory);
+
+            processedImagesDirecotry = generalDirectory + @"\ProcessedImages";
+            Directory.CreateDirectory(processedImagesDirecotry);
         }
     }
 }

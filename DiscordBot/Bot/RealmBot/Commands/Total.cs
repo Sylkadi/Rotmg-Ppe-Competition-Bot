@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using DiscordBot.Bot.RealmBot.Game;
+using DiscordBot.Bot.RealmBot.Ppe;
 using static DiscordBot.Bot.RealmBot.Emojis.Emojis;
 
 namespace DiscordBot.Bot.RealmBot.Commands
@@ -56,7 +58,8 @@ namespace DiscordBot.Bot.RealmBot.Commands
             builder.WithButton("←", $"PPE_TOTAL_PREVIOUS|{id}", ButtonStyle.Secondary, disabled: target.previousPpe == null);
             builder.WithButton("→", $"PPE_TOTAL_NEXT|{id}", ButtonStyle.Secondary, disabled: target.nextPpe == null);
 
-            RestUserMessage botMessage = await source.Channel.SendMessageAsync("", embed: GetEmbed(author ?? source.Author, target).Build(), components: builder.Build());
+            FileAttachment imageAttachment = new FileAttachment(target.itemInfographicImagePath, $"{target.itemInfographicImageName}.png");
+            RestUserMessage botMessage = await source.Channel.SendFileAsync(imageAttachment, text: "", embed: GetEmbed(author ?? source.Author, target).Build(), components: builder.Build());
 
             viewer.restUserMessage = botMessage;
         }
@@ -88,9 +91,16 @@ namespace DiscordBot.Bot.RealmBot.Commands
                 {
                     Name = author.GlobalName ?? author.Username,
                     IconUrl = author.GetAvatarUrl() ?? author.GetDefaultAvatarUrl()
-                }
+                },
+                ImageUrl = $"attachment://{ppe.itemInfographicImageName}.png"
             };
 
+            builder.AddField(x =>
+            {
+                x.Name = "ID";
+                x.Value = ppe.id;
+                x.IsInline = true;
+            });
             builder.AddField(x =>
             {
                 x.Name = "Total Points";
@@ -165,6 +175,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
                 {
                     x.Components = new ComponentBuilder().WithButton(previousButton).WithButton(nextButton).Build();
                     x.Embed = GetEmbed(author, currentPpe).Build();
+                    x.Attachments = new List<FileAttachment>() { new FileAttachment(currentPpe.itemInfographicImagePath, $"{currentPpe.itemInfographicImageName}.png") };
                 });
             }
 

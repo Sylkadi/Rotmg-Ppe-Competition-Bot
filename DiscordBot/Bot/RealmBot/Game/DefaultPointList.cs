@@ -472,6 +472,7 @@ namespace DiscordBot.Bot.RealmBot.Game
             new Item("Crystal Wand", [], BagType.White, 45, 23, 12),
             new Item("Crystal Mace", [], BagType.White, 45, 23, 12), new Item("Shiny Crystal Mace", [], BagType.White, 135, 68, 34),
             new Item("Mini Crystal Steed", [], BagType.Golden, 135, 68, 34),
+            new Item("Keychain Cutlass", [], BagType.White, 45, 23, 12),
 
             new Item("Deadly Keg", [], BagType.White, 45, 23, 12), new Item("Shiny Deadly Keg", [], BagType.White, 135, 68, 34),
             new Item("Mighty Stein", [], BagType.White, 45, 23, 12),

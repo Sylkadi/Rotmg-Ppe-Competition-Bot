@@ -12,6 +12,11 @@ namespace DiscordBot.Bot.RealmBot.Game
             this.bagType = bagType;
             this.points = points;
             this.nickNames = nickNames;
+
+            if(name.Contains("Shiny"))
+            {
+                isShiny = true;
+            }
         }
 
         public Item(string name, string[] nickNames, BagType bagType, params int[] points)
@@ -21,6 +26,11 @@ namespace DiscordBot.Bot.RealmBot.Game
             this.bagType = bagType;
             this.points = points;
             this.nickNames = nickNames;
+
+            if (name.Contains("Shiny"))
+            {
+                isShiny = true;
+            }
         }
 
         [JsonInclude]
@@ -28,6 +38,9 @@ namespace DiscordBot.Bot.RealmBot.Game
 
         [JsonIgnore]
         private string _imageName { get; set; }
+
+        [JsonIgnore]
+        public bool isShiny { get; set; }
 
         [JsonInclude]
         public string imageName {
@@ -51,6 +64,15 @@ namespace DiscordBot.Bot.RealmBot.Game
             get
             {
                 return $@"{IO.imagesDirectory}\{imageName}.png";
+            }
+        }
+
+        [JsonIgnore]
+        public string proccessedImagePath
+        {
+            get
+            {
+                return $@"{IO.processedImagesDirecotry}\{imageName}.png";
             }
         }
 

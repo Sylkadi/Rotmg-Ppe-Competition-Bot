@@ -11,10 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.16.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if not exist &quot;$(TargetDir)\RealmBot&quot; mkdir &quot;$(TargetDir)\RealmBot&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Game&quot; mkdir &quot;$(TargetDir)\RealmBot\Game&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Images&quot; mkdir &quot;$(TargetDir)\RealmBot\Images&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Ppe&quot; mkdir &quot;$(TargetDir)\RealmBot\Ppe&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Emotes&quot; mkdir &quot;$(TargetDir)\RealmBot\Emotes&quot;&#xD;&#xA;xcopy &quot;$(SolutionDir)\$(SolutionName)\Bot\RealmBot\Emojis\Images&quot; &quot;$(TargetDir)\RealmBot\Emotes&quot; /Y /I&#xD;&#xA;xcopy &quot;$(SolutionDir)\$(SolutionName)\Bot\RealmBot\Game\Images&quot; &quot;$(TargetDir)\RealmBot\Images&quot; /Y /I" />
+    <Exec Command="if not exist &quot;$(TargetDir)\RealmBot&quot; mkdir &quot;$(TargetDir)\RealmBot&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Game&quot; mkdir &quot;$(TargetDir)\RealmBot\Game&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Images&quot; mkdir &quot;$(TargetDir)\RealmBot\Images&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Ppe&quot; mkdir &quot;$(TargetDir)\RealmBot\Ppe&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\Emotes&quot; mkdir &quot;$(TargetDir)\RealmBot\Emotes&quot;&#xD;&#xA;if not exist &quot;$(TargetDir)\RealmBot\ProcessedImages&quot; mkdir &quot;$(TargetDir)\RealmBot\ProcessedImages&quot;&#xD;&#xA;xcopy &quot;$(SolutionDir)\$(SolutionName)\Bot\RealmBot\Emojis\Images&quot; &quot;$(TargetDir)\RealmBot\Emotes&quot; /Y /I&#xD;&#xA;xcopy &quot;$(SolutionDir)\$(SolutionName)\Bot\RealmBot\Game\Images&quot; &quot;$(TargetDir)\RealmBot\Images&quot; /Y /I" />
   </Target>
 
 </Project>

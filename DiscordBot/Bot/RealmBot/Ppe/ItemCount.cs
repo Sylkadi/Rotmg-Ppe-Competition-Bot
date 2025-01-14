@@ -3,7 +3,7 @@ using DiscordBot.Bot.RealmBot.Game;
 
 namespace DiscordBot.Bot.RealmBot.Ppe
 {
-    public class ItemCount
+    public class ItemCount : IComparable<ItemCount>
     {
         [JsonInclude]
         public int amount { get; set; }
@@ -54,5 +54,9 @@ namespace DiscordBot.Bot.RealmBot.Ppe
             return Increment(amount);
         }
 
+        public int CompareTo(ItemCount other)
+        {
+            return other.amount.CompareTo(this.amount);
+        }
     }
 }

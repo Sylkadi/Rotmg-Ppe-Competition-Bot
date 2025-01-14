@@ -117,6 +117,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
             }
 
             int oldPoints = ppe.totalPoints;
+            ppe.itemInfographicUpdated = false;
             ppe.totalPoints += itemNet + setNet;
             ppe.Serialize();
 
@@ -149,6 +150,7 @@ namespace DiscordBot.Bot.RealmBot.Commands
 
             int oldPoints = ppe.totalPoints;
             ppe.totalPoints += itemNet + setNet;
+            ppe.itemInfographicUpdated = false;
             ppe.Serialize();
 
             EmbedBuilder builder = GetEmbed(component.User, itemCount, setCount, itemNet, setNet, oldPoints, ppe.totalPoints);

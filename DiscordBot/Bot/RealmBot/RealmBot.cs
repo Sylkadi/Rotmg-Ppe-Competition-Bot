@@ -4,6 +4,7 @@ using DiscordBot.Bot.RealmBot.Commands;
 using Discord;
 using DiscordBot.Bot.RealmBot.Game;
 using Discord.Rest;
+using System.Diagnostics;
 
 namespace DiscordBot.Bot.RealmBot
 {
@@ -27,6 +28,8 @@ namespace DiscordBot.Bot.RealmBot
         public List<string> userBlackList { get; set; }
 
         public List<BotButtonMessage> botButtonMessages { get; set; }
+
+        public const int infographicImageSize = 64;
 
         public RealmBot()
         {
@@ -156,7 +159,7 @@ namespace DiscordBot.Bot.RealmBot
             {
                 competition.pointList.Deserialize();
             }
-
+            
             await Emojis.Emojis.InitalizeAsync();
 
             competition.ppes = new List<Ppe.Ppe>();
@@ -164,6 +167,8 @@ namespace DiscordBot.Bot.RealmBot
 
             foreach (string ppeFile in ppeFiles)
             {
+                if (ppeFile.Contains("_")) continue;
+
                 string id = Path.GetFileName(ppeFile);
 
                 Ppe.Ppe ppe = new Ppe.Ppe();
@@ -171,8 +176,14 @@ namespace DiscordBot.Bot.RealmBot
 
                 competition.ppes.Add(ppe);
             }
+            
             await competition.DeserializeAsync();
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            ProcessedImages.Process(IO.imagesDirectory, IO.processedImagesDirecotry, infographicImageSize, infographicImageSize);
+            sw.Stop();
+            Log.Info($"Image processed time: {sw.ElapsedMilliseconds}ms");
 
             while (true)
             {
