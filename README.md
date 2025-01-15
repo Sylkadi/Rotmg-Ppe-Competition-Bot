@@ -8,7 +8,7 @@ This bot is meant to be used by multiple people for a competition and uses 3 com
 
 - **>total** or **>total 'user'**
 
-![Screenshot](https://i.imgur.com/Ru8j8a0.png)
+![Screenshot](https://i.imgur.com/RjKH6Sw.png)
 
 - **>reset**
 
